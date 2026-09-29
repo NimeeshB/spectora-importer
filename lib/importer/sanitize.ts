@@ -23,11 +23,16 @@ export function sanitizeBody(html: string): { html: string; stripped: Stripped[]
   }, { decodeEntities: false });
   parser.write(html);
   parser.end();
-  const clean = sanitizeHtml(html, {
+  // sanitize-html decodes numeric references such as &#13; into raw characters. Protect them so the
+  // stored text stays byte-identical to the source instead of being silently normalized.
+  const PROTECT = "\uE000";
+  const protectedHtml = html.replace(/&#(x[0-9a-f]+|\d+);/gi, `${PROTECT}$1;`);
+  const cleaned = sanitizeHtml(protectedHtml, {
     allowedTags: ALLOWED_TAGS,
     allowedAttributes: ALLOWED_ATTRS,
     allowedSchemes: ALLOWED_SCHEMES,
     disallowedTagsMode: "discard",
   });
+  const clean = cleaned.replace(new RegExp(`${PROTECT}(x[0-9a-f]+|\\d+);`, "gi"), "&#$1;");
   return { html: clean, stripped };
 }

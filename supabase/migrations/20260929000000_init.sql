@@ -64,6 +64,14 @@ create table import_issues (
 );
 create index import_issues_run_idx on import_issues(import_run_id, row);
 
+create view template_stats with (security_invoker = true) as
+select t.id as template_id,
+  (select count(*) from sections s where s.template_id = t.id) as sections,
+  (select count(*) from items i join sections s on s.id = i.section_id where s.template_id = t.id) as items,
+  (select count(*) from comments c join items i on i.id = c.item_id
+     join sections s on s.id = i.section_id where s.template_id = t.id) as comments
+from templates t;
+
 -- v1 has no user auth. RLS is enabled with no policies so the anon key can read/write nothing;
 -- the app talks to Postgres only through the service-role key on the server.
 alter table templates enable row level security;
