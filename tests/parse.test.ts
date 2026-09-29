@@ -54,6 +54,32 @@ describe("InterNACHI export", () => {
   });
 });
 
+describe("Room-by-Room export (a genuinely different template)", () => {
+  const buf = fx("room-by-room-residential-2026-09-29.xls");
+  const r = parseSpectoraExport(buf, "room-by-room-residential-2026-09-29.xls");
+
+  it("reconciles with its own structure", () => {
+    expect(r.stats).toMatchObject({ rowsRead: 798, imported: 798, skipped: 0, unsupported: 0, sections: 22, items: 136, comments: 798, reconciles: true });
+    expect(r.stats.byType).toEqual({ info: 114, defect: 661, limit: 23 });
+    expect(r.stats.bySeverity).toEqual({ "-1": 1, "0": 639, "1": 21, "(none)": 137 });
+    expect(r.template.name).toBe("room by room residential");
+  });
+
+  it("differs from InterNACHI in structure, and preserves against the source", async () => {
+    const { readFirstSheet } = await import("../lib/importer/xlsx");
+    const { preservationCheck } = await import("../lib/preserve");
+    const nachi = parseSpectoraExport(fx("internachi-residential-2026-09-29.xls"), "x.xls");
+    expect(r.template.sections.map((s) => s.name)).not.toEqual(nachi.template.sections.map((s) => s.name));
+    const tree = {
+      sections: r.template.sections.map((s, si) => ({
+        name: s.name, position: si,
+        items: s.items.map((i, ii) => ({ name: i.name, position: ii, comments: i.comments })),
+      })),
+    };
+    expect(preservationCheck(readFirstSheet(buf), r.ledger, r.issues, tree as never).mismatches).toEqual([]);
+  });
+});
+
 describe("hand-made fixtures", () => {
   it("accounts for blank, unplaceable and empty rows", () => {
     const buf = makeXlsx([

@@ -59,7 +59,7 @@ keyboard-usable inputs; editing of comment type/severity/choices (kept in DB, sh
 prioritized per the brief. Binsr trial and Hive sign-up notes are not done here (not code).
 
 ## How it was checked
-- 21 unit tests: real-file counts, ordering, entity decoding, trailing whitespace, determinism, nested/unsafe HTML, unknown values,
+- 23 unit tests: real-file counts, ordering, entity decoding, trailing whitespace, determinism, nested/unsafe HTML, unknown values,
   photos/unknown columns, non-adjacent grouping, blank/orphan/empty rows, and refusal of empty, non-xlsx, corrupt, oversized,
   header-missing and header-only files.
 - DB integration test (persistence via fresh client, copy independence, edit-copy-original-unchanged), run through the real
@@ -68,8 +68,11 @@ prioritized per the brief. Binsr trial and Hive sign-up notes are not done here 
   edit copy → original unchanged; bad file → clear error; second export → preview → confirm → report with preservation check.
 - Preservation check compares hierarchy, names, text and order read from the source sheet with what is saved
   (392/392 for the seeded file). It is not a true round-trip.
-- **Generality is only partly tested.** Both fixtures have identical content. The Room-by-Room export has not been made yet;
-  until then generality rests on hand-made fixtures. Add it to `fixtures/` and re-run the tests.
+- **Generality:** InterNACHI and the account default are identical in content, so they prove nothing about generality. The
+  Room-by-Room export (22 sections, 136 items, 798 comments) is different: it imports with all rows reconciled, passes the
+  preservation check, and uses the same columns in the same way (no photos, links or new comment/answer types), plus one Low
+  severity comment. Still only Spectora "HTML Text" exports of stock templates; a template with photos, links or range answers
+  is untested beyond hand-made fixtures.
 
 ## Credits
 Next.js, supabase-js, fflate + fast-xml-parser (xlsx reading), sanitize-html + htmlparser2, he, Vitest, Playwright, Tailwind. Built with Claude Code.

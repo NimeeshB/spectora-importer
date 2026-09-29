@@ -7,6 +7,7 @@ stock templates from a free Spectora trial account.
 |---|---|---|---|
 | `internachi-residential-2026-09-29.xls` | InterNACHI Residential | Added from Spectora Template Center | 2026-09-29 |
 | `residential-template-2026-09-29.xls` | Residential Template (account default) | Spectora account default | 2026-09-29 |
+| `room-by-room-residential-2026-09-29.xls` | Room-by-Room Residential Template | Spectora account (My Templates), Export HTML Text | 2026-09-29 |
 
 Export path in Spectora: open the template → ⋮ menu → Export to spreadsheet → Export HTML Text.
 
@@ -16,6 +17,4 @@ Export path in Spectora: open the template → ⋮ menu → Export to spreadshee
 - The two files have identical content and differ only in the `Last Modified` column, so they
   do not test whether the importer works beyond one template.
 
-## Still to add
-`room-by-room-residential-2026-09-29.xls` (My Templates → Room-by-Room → ⋮ → Export to spreadsheet → Export HTML Text)
-to test the importer against a genuinely different template.
+The Room-by-Room file is a genuinely different template (22 sections, 136 items, 798 comments) and is the generality test.
