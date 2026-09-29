@@ -62,9 +62,9 @@ prioritized per the brief. Binsr trial and Hive sign-up notes are not done here 
 - 21 unit tests: real-file counts, ordering, entity decoding, trailing whitespace, determinism, nested/unsafe HTML, unknown values,
   photos/unknown columns, non-adjacent grouping, blank/orphan/empty rows, and refusal of empty, non-xlsx, corrupt, oversized,
   header-missing and header-only files.
-- DB integration test (persistence via fresh client, copy independence, edit-copy-original-unchanged), run against a local
-  Postgres 17 + PostgREST through the real supabase-js client. **Not yet run against a hosted Supabase project.**
-- Browser smoke (`scripts/e2e-smoke.ts`, Playwright, production build): edit → reload → persisted; duplicate → copy shows origin;
+- DB integration test (persistence via fresh client, copy independence, edit-copy-original-unchanged), run through the real
+  supabase-js client against a local Postgres 17 + PostgREST and against the hosted Supabase project.
+- Browser smoke (`scripts/e2e-smoke.ts`, Playwright, production build, run against the hosted Supabase project): edit → reload → persisted; duplicate → copy shows origin;
   edit copy → original unchanged; bad file → clear error; second export → preview → confirm → report with preservation check.
 - Preservation check compares hierarchy, names, text and order read from the source sheet with what is saved
   (392/392 for the seeded file). It is not a true round-trip.
