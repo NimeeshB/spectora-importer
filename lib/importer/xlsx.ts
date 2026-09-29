@@ -2,7 +2,7 @@
 import { unzipSync, strFromU8 } from "fflate";
 import { XMLParser } from "fast-xml-parser";
 
-export const MAX_BYTES = 5 * 1024 * 1024;
+export const MAX_BYTES = 4 * 1024 * 1024;
 
 export class ImportError extends Error {}
 
