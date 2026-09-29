@@ -15,3 +15,7 @@ Export path in Spectora: open the template → ⋮ menu → Export to spreadshee
   The importer detects the format from the file contents, not the extension.
 - The two files have identical content and differ only in the `Last Modified` column, so they
   do not test whether the importer works beyond one template.
+
+## Still to add
+`room-by-room-residential-2026-09-29.xls` (My Templates → Room-by-Room → ⋮ → Export to spreadsheet → Export HTML Text)
+to test the importer against a genuinely different template.

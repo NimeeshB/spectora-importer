@@ -138,18 +138,18 @@ describe("preservation check (in-memory tree)", () => {
     const { preservationCheck } = await import("../lib/preserve");
     const buf = fx("internachi-residential-2026-09-29.xls");
     const r = parseSpectoraExport(buf, "x.xls");
-    const toTree = (): any => ({
+    const toTree = () => ({
       sections: r.template.sections.map((s, si) => ({
         name: s.name, position: si,
         items: s.items.map((i, ii) => ({ name: i.name, position: ii, comments: i.comments.map((c) => ({ ...c, body_html: c.body_html })) })),
       })),
     });
-    const res = preservationCheck(readFirstSheet(buf), r.ledger, r.issues, toTree());
+    const res = preservationCheck(readFirstSheet(buf), r.ledger, r.issues, toTree() as never);
     expect(res.mismatches).toEqual([]);
     expect(res.checked).toBe(392);
-    const bad = toTree();
+    const bad = toTree() as never as { sections: { items: { comments: { name: string }[] }[] }[] };
     bad.sections[0].items[0].comments[0].name = "changed";
     bad.sections[1].items[0].comments.reverse();
-    expect(preservationCheck(readFirstSheet(buf), r.ledger, r.issues, bad).ok).toBe(false);
+    expect(preservationCheck(readFirstSheet(buf), r.ledger, r.issues, bad as never).ok).toBe(false);
   });
 });

@@ -143,10 +143,18 @@ export function parseSheet(sheet: Sheet, filename: string, sha256 = ""): ParseRe
     const secName = decodeName(secRaw);
     const itemName = decodeName(itemRaw);
     let sec = secIdx.get(secName);
-    if (!sec) sections.push((sec = { name: secName, items: [] })), secIdx.set(secName, sec);
+    if (!sec) {
+      sec = { name: secName, items: [] };
+      sections.push(sec);
+      secIdx.set(secName, sec);
+    }
     const ik = `${secName}\u0000${itemName}`;
     let item = itemIdx.get(ik);
-    if (!item) sec.items.push((item = { name: itemName, comments: [] })), itemIdx.set(ik, item);
+    if (!item) {
+      item = { name: itemName, comments: [] };
+      sec.items.push(item);
+      itemIdx.set(ik, item);
+    }
 
     const name = decodeName(nameRaw);
     if (!nameRaw.trim()) issue(r.row, colLetter(fieldCol.name), "warning", "Comment name is empty; imported with a blank name.", textRaw);

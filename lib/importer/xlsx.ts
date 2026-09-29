@@ -25,8 +25,8 @@ const text = (t: unknown): string => {
 };
 
 // Rich text and plain <si>/<is> both reduce to concatenated <t> runs.
-const richText = (n: any): string =>
-  n?.r ? n.r.map((r: any) => text(r.t)).join("") : text(n?.t);
+type Node = { t?: unknown; r?: { t?: unknown }[] } | undefined;
+const richText = (n: Node): string => (n?.r ? n.r.map((r) => text(r.t)).join("") : text(n?.t));
 
 export function colIndex(ref: string): number {
   const letters = /^[A-Z]+/.exec(ref)?.[0] ?? "";
@@ -56,7 +56,7 @@ export function readFirstSheet(buffer: Buffer | Uint8Array): Sheet {
   const first = sheets[0];
   if (!first) throw new ImportError("The workbook has no sheets.");
   const rid = first["@_r:id"];
-  const rels: any[] = xml.parse(get("xl/_rels/workbook.xml.rels") ?? "").Relationships?.Relationship ?? [];
+  const rels: Record<string, string>[] = xml.parse(get("xl/_rels/workbook.xml.rels") ?? "").Relationships?.Relationship ?? [];
   const target = rels.find((r) => r["@_Id"] === rid)?.["@_Target"] ?? "worksheets/sheet1.xml";
   const path = target.startsWith("/") ? target.slice(1) : `xl/${target}`;
   const sheetXml = get(path);
