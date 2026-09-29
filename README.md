@@ -5,6 +5,8 @@ lets you edit it, duplicate it, and shows an import trust report (mapped / skipp
 
 Stack: Next.js App Router (TypeScript) · Supabase Postgres via supabase-js · deterministic parser (no LLM).
 
+**Live demo:** https://spectora-importer.vercel.app (opens on the seeded InterNACHI template; no login).
+
 ## Setup
 ```bash
 npm install
